@@ -1,50 +1,35 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-
+/**
+ * <h1>CheckAttributeThread class</h1>
+ * Checks if all attributes are present
+ * @author  Ashwin Raghunath
+ * @version 1.0
+ * @since 3-8-18
+ */
 public class CheckAttributeThread extends Thread {
 
-    String fileName;
-    CheckAttributeThread(String fileName){
-        this.fileName = fileName;
+    String[] fileData;
+    CheckAttributeThread(String[] fileData){
+        this.fileData= fileData;
     }
     public void run(){
-        BufferedReader br = null;
+
 
         try{
-            String sCurrentLine;
-            br = new BufferedReader(new FileReader(fileName));
 
-            int i=0;
-            while ((sCurrentLine = br.readLine()) != null) {
-                Employee employee = new Employee();
-                String[] arr = sCurrentLine.split(" ");
-                if(arr.length!=5){
-                    System.out.println("All attributes not present");
+                if(fileData.length!=5){
+                    Main.logger.debug("All attributes not present for record " );
                 }
-                else if (arr.length==5){
-                    employee.setFname(arr[0]);
-                    employee.setLname(arr[1]);
-                    employee.setEmail(arr[2]);
-                    employee.setNumber(arr[3]);
-                    Date date=new SimpleDateFormat("MM-DD-yyyy").parse(arr[4]);
-                    employee.setDate(date);
-
-                    CheckDuplicatesThread checkDuplicatesThread = new CheckDuplicatesThread(employee);
-                    checkDuplicatesThread.start();
+                else if (fileData.length==5){
+                        CheckDobThread checkDobThread = new CheckDobThread(fileData);
+                        checkDobThread.start();
 
                 }
-                i++;
-            }
+
 
         }catch(Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

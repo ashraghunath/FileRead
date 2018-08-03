@@ -1,9 +1,13 @@
 package com.company;
 
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+/**
+ * <h1>CheckDuplicatesThread class</h1>
+ * Checks if file has duplicate records
+ * @author  Ashwin Raghunath
+ * @version 1.0
+ * @since 3-8-18
+ */
 public class CheckDuplicatesThread extends Thread {
 
     Employee employee;
@@ -14,23 +18,15 @@ public class CheckDuplicatesThread extends Thread {
     }
 
     public void run() {
-        System.out.println(Thread.currentThread().toString());
         if(!Main.concurrentHashMap.containsKey(employee.getEmail())) {
-            System.out.println("adding to concurrentHashMap");
             Main.concurrentHashMap.put(employee.getEmail(), employee);
 
             WriteToDBThread writeToDBThread = new WriteToDBThread(employee);
             writeToDBThread.start();
         }
 
-        for(ConcurrentHashMap.Entry<String, Employee> temp : Main.concurrentHashMap.entrySet()){
-            System.out.println("Key " +  temp.getKey().toString());
-            System.out.println("Value " + temp.getValue().toString());
         }
 
-        }
-
-//    write to db here
     }
 
 
